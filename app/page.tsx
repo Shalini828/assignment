@@ -1,69 +1,213 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState(false);
+
+  const handleLogin = () => {
+    // Demo assignment behavior:
+    // show invalid credentials first.
+    setLoginError(true);
+  };
+
+  const handleContinue = () => {
+    router.push("/verify");
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <main className="min-h-screen bg-[#f7f9fc] flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-[640px] bg-white rounded-2xl border border-[#e5e7eb] shadow-sm px-10 sm:px-12 py-10 sm:py-12">
+        {/* ICON */}
+        <div className="flex justify-center mb-7">
+          <div
+            className={`w-20 h-20 rounded-full flex items-center justify-center ${
+              loginError ? "bg-red-50" : "bg-[#eef2ff]"
+            }`}
+          >
+            <span className="text-3xl">🔒</span>
+          </div>
+        </div>
+
+        {/* HEADER */}
+        <div className="text-center mb-9">
+          <h1 className="text-[28px] leading-tight font-bold text-[#111827]">
+            Welcome back!
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+          <p className="text-[16px] text-[#64748b] mt-2">
+            Login to your account
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        {/* EMAIL / USERNAME */}
+        <div className="mb-5">
+          <label
+            htmlFor="email"
+            className="block text-[16px] font-medium text-[#1f2937] mb-2"
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+            Email or Username
+          </label>
+
+          <div className="relative">
+            <span
+              className={`absolute left-4 top-1/2 -translate-y-1/2 text-[18px] ${
+                loginError ? "text-red-400" : "text-[#64748b]"
+              }`}
+            >
+              ✉
+            </span>
+
+            <input
+              id="email"
+              type="text"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setLoginError(false);
+              }}
+              placeholder="Email or Username"
+              autoComplete="username"
+              className={`w-full h-14 rounded-lg border pl-12 pr-4 bg-white text-[16px] font-medium text-[#111827] placeholder:text-[#9ca3af] outline-none transition ${
+                loginError
+                  ? "border-red-400 bg-red-50/20"
+                  : "border-[#d1d5db] focus:border-[#3155e7] focus:ring-2 focus:ring-[#3155e7]/10"
+              }`}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
         </div>
-      </main>
-    </div>
+
+        {/* PASSWORD */}
+        <div className="mb-2">
+          <div className="flex justify-between items-center mb-2">
+            <label
+              htmlFor="password"
+              className="text-[16px] font-medium text-[#1f2937]"
+            >
+              Password
+            </label>
+
+            <button
+              type="button"
+              className="text-[14px] font-medium text-[#3155e7] hover:underline"
+            >
+              Forgot password?
+            </button>
+          </div>
+
+          <div className="relative">
+            <span
+              className={`absolute left-4 top-1/2 -translate-y-1/2 text-[18px] ${
+                loginError ? "text-red-400" : "text-[#64748b]"
+              }`}
+            >
+              🔑
+            </span>
+
+            <input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setLoginError(false);
+              }}
+              placeholder="Password"
+              autoComplete="current-password"
+              className={`w-full h-14 rounded-lg border pl-12 pr-12 bg-white text-[16px] font-medium text-[#111827] placeholder:text-[#9ca3af] outline-none transition ${
+                loginError
+                  ? "border-red-400 bg-red-50/20"
+                  : "border-[#d1d5db] focus:border-[#3155e7] focus:ring-2 focus:ring-[#3155e7]/10"
+              }`}
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#64748b] hover:text-[#111827]"
+            >
+              {showPassword ? "◉" : "◌"}
+            </button>
+          </div>
+
+          {/* ERROR */}
+          {loginError && (
+            <p className="text-[13px] font-medium text-red-500 mt-2">
+              Invalid email or password. Please try again.
+            </p>
+          )}
+        </div>
+
+        {/* REMEMBER ME */}
+        <div className="flex items-center gap-2 mt-5 mb-6">
+          <input
+            id="remember"
+            type="checkbox"
+            className="w-4 h-4 accent-[#3155e7]"
+          />
+
+          <label htmlFor="remember" className="text-[14px] text-[#475569]">
+            Remember me
+          </label>
+        </div>
+
+        {/* LOGIN */}
+        <button
+          type="button"
+          onClick={handleLogin}
+          className="w-full h-14 rounded-lg bg-[#3155e7] text-white text-[16px] font-semibold hover:bg-[#2447d4] transition"
+        >
+          Login
+        </button>
+
+        {/* CONTINUE AFTER INVALID LOGIN */}
+        {loginError && (
+          <button
+            type="button"
+            onClick={handleContinue}
+            className="w-full h-12 mt-3 rounded-lg border border-[#3155e7] bg-white text-[#3155e7] font-semibold hover:bg-[#eff6ff] transition"
+          >
+            Continue
+          </button>
+        )}
+
+        {/* DIVIDER */}
+        <div className="flex items-center gap-4 my-7">
+          <div className="h-px bg-[#e5e7eb] flex-1" />
+
+          <span className="text-[13px] text-[#94a3b8]">or</span>
+
+          <div className="h-px bg-[#e5e7eb] flex-1" />
+        </div>
+
+        {/* GOOGLE */}
+        <button
+          type="button"
+          className="w-full h-14 rounded-lg border border-[#d1d5db] flex items-center justify-center gap-3 text-[16px] font-medium text-[#1f2937] bg-white hover:bg-gray-50 transition"
+        >
+          <span className="font-bold text-red-500">G</span>
+          Continue with Google
+        </button>
+
+        {/* REGISTER */}
+        <p className="text-center text-[14px] text-[#64748b] mt-7">
+          New here?{" "}
+          <button
+            type="button"
+            onClick={() => router.push("/register")}
+            className="text-[#3155e7] font-semibold hover:underline"
+          >
+            Create an account
+          </button>
+        </p>
+      </div>
+    </main>
   );
 }
